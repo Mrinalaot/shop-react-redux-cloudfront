@@ -30,24 +30,24 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
   };
 
   const uploadFile = async (e: any) => {
-      // Get the presigned URL
-      const response = await axios({
-        method: 'GET',
-        url,
-        params: {
-          name: encodeURIComponent(file.name)
-        }
-      })
-      console.log('File to upload: ', file.name)
-      console.log('Uploading to: ', response.data)
-      const result = await fetch(response.data, {
-        method: 'PUT',
-        body: file
-      })
-      console.log('Result: ', result)
-      setFile('');
-    }
-  ;
+    const fileName = `${new Date().toISOString().replaceAll(":", "-")}_${file.name}`;
+    // Get the presigned URL
+    const response = await axios({
+      method: "GET",
+      url,
+      params: {
+        name: encodeURIComponent(fileName),
+      },
+    });
+    console.log("File to upload: ", fileName);
+    console.log("Uploading to: ", response.data);
+    const result = await fetch(response.data, {
+      method: "PUT",
+      body: file,
+    });
+    console.log("Result: ", result);
+    setFile("");
+  };
 
   return (
     <div className={classes.content}>
